@@ -5,6 +5,7 @@ from joblib import load
 from flask_cors import CORS
 from pymongo import MongoClient
 import datetime
+import os   
 
 app = Flask(__name__)
 CORS(app)
@@ -12,10 +13,12 @@ CORS(app)
 # --- Load model ---
 model = load("saved_model.joblib")
 
-# --- MongoDB Atlas ---
-client = MongoClient("mongodb+srv://snjadhav1704_db_user:Sayali1234567@cluster0.xfnaeku.mongodb.net/ctrlyou?retryWrites=true&w=majority&appName=Cluster0")
-db = client["ctrlyou"]                  # 🔹 database
-collection = db["questionair"]          # 🔹 collection
+# --- MongoDB Atlas (secure) ---
+MONGO_URI = os.environ.get("MONGO_URI")   
+client = MongoClient(MONGO_URI)
+
+db = client["ctrlyou"]
+collection = db["questionair"]
 
 # --- Mapping ---
 option_mapping = {
@@ -30,7 +33,7 @@ option_mapping = {
 def predict():
     try:
         data = request.get_json()
-        print("📥 Incoming request:", data)  # Debug log
+        print("📥 Incoming request:", data)
 
         if not data or "responses" not in data or "uid" not in data:
             return jsonify({"success": False, "message": "Missing responses or uid"}), 400
@@ -46,35 +49,30 @@ def predict():
         except KeyError as e:
             return jsonify({"success": False, "message": f"Invalid option: {e}"}), 400
 
-        # Convert to DataFrame for prediction
         X_new = pd.DataFrame([numeric_responses], columns=[f"Q{i}" for i in range(1, 10)])
 
         prediction = model.predict(X_new)[0]
-
-        # ✅ Calculate total score
         total_score = sum(numeric_responses)
 
-        # ✅ Save to MongoDB
         doc = {
             "uid": uid,
             "responses": responses,
             "numeric_responses": numeric_responses,
-            "total_score": total_score,         # <-- added
+            "total_score": total_score,
             "prediction": prediction,
             "created_at": datetime.datetime.utcnow()
         }
-        collection.insert_one(doc)
 
-        print("✅ Stored in MongoDB:", doc)  # Debug log
+        collection.insert_one(doc)
 
         return jsonify({
             "success": True,
             "category": prediction,
-            "total_score": total_score        # <-- return it too
+            "total_score": total_score
         })
 
     except Exception as e:
-        print("❌ Error in /predict:", str(e))  # Debug log
+        print(" Error in /predict:", str(e))
         return jsonify({"success": False, "message": str(e)}), 500
 
 
@@ -84,5 +82,6 @@ def home():
 
 
 if __name__ == "__main__":
-    # Run the Flask app
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    import os
+    port = int(os.environ.get("PORT", 5000))   # ✅ for Render
+    app.run(host="0.0.0.0", port=port, debug=False)
