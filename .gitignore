@@ -52,3 +52,7 @@ keys.json
 
 # nested git
 */.git/
+
+# Secrets
+serviceAccountKey.json
+**/serviceAccountKey.json
