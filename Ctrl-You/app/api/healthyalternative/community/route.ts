@@ -21,7 +21,7 @@ interface Post {
 }
 
 // GET all posts
-export async function GET(_request: Request) {
+export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("levelup");
