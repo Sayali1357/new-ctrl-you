@@ -1,13 +1,24 @@
 from flask import Flask, request, jsonify
+import numpy as np
 import pandas as pd
 from joblib import load
 from flask_cors import CORS
+from pymongo import MongoClient
+import datetime
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 # --- Load model ---
 model = load("saved_model.joblib")
+
+# --- MongoDB Atlas ---
+
+MONGO_URI = os.environ.get("MONGODB_URI")  # ✅ read from env
+client = MongoClient(MONGO_URI)
+db = client["ctrlyou"]                  # 🔹 database
+collection = db["questionair"]          # 🔹 collection
 
 # --- Mapping ---
 option_mapping = {
@@ -22,48 +33,59 @@ option_mapping = {
 def predict():
     try:
         data = request.get_json()
-        print(" Incoming request:", data)
+        print("📥 Incoming request:", data)  # Debug log
 
-        if not data or "responses" not in data:
-            return jsonify({"success": False, "message": "Missing responses"}), 400
+        if not data or "responses" not in data or "uid" not in data:
+            return jsonify({"success": False, "message": "Missing responses or uid"}), 400
 
         responses = data["responses"]
+        uid = data["uid"]
 
         if len(responses) != 9:
             return jsonify({"success": False, "message": "Exactly 9 responses are required"}), 400
 
-        # Convert to numeric
         try:
             numeric_responses = [option_mapping[r] for r in responses]
         except KeyError as e:
             return jsonify({"success": False, "message": f"Invalid option: {e}"}), 400
 
-        # Prepare input
+        # Convert to DataFrame for prediction
         X_new = pd.DataFrame([numeric_responses], columns=[f"Q{i}" for i in range(1, 10)])
 
-        # Prediction
         prediction = model.predict(X_new)[0]
 
-        # Score
+        # ✅ Calculate total score
         total_score = sum(numeric_responses)
+
+        # ✅ Save to MongoDB
+        doc = {
+            "uid": uid,
+            "responses": responses,
+            "numeric_responses": numeric_responses,
+            "total_score": total_score,         # <-- added
+            "prediction": prediction,
+            "created_at": datetime.datetime.utcnow()
+        }
+        collection.insert_one(doc)
+
+        print("✅ Stored in MongoDB:", doc)  # Debug log
 
         return jsonify({
             "success": True,
             "category": prediction,
-            "total_score": total_score
+            "total_score": total_score        # <-- return it too
         })
 
     except Exception as e:
-        print(" Error:", str(e))
+        print("❌ Error in /predict:", str(e))  # Debug log
         return jsonify({"success": False, "message": str(e)}), 500
 
 
 @app.route("/", methods=["GET"])
 def home():
-    return jsonify({"message": "Prediction API running (no DB)"})
+    return jsonify({"message": "Gaming Addiction Prediction API is running!"})
 
 
 if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=False)
+    # Run the Flask app
+    app.run(host="0.0.0.0", port=5000, debug=True)
