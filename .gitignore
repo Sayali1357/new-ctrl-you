@@ -1,0 +1,54 @@
+# Root gitignore for full project
+# dependencies
+node_modules/
+**/node_modules/
+.pnp
+.pnp.*
+.yarn/
+
+# python environments
+venv/
+.venv/
+env/
+.env/
+**/venv/
+**/__pycache__/
+*.pyc
+pip-log.txt
+pip-delete-this-directory.txt
+
+# next.js
+.next/
+**/ .next/
+out/
+
+# vercel
+.vercel
+
+# environments
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env*
+
+# system files
+.DS_Store
+Thumbs.db
+
+# build
+dist/
+build/
+output.txt
+build_error.txt
+error.txt
+success.txt
+test_ai_keys.js
+test_fetch.js
+test_generate.mjs
+test_final.mjs
+keys.json
+
+# nested git
+*/.git/
