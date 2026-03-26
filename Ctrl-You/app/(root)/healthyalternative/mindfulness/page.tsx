@@ -38,7 +38,7 @@ export default function MindfulnessPage() {
         } else {
           setError("Failed to load activities");
         }
-      } catch (err) {
+      } catch {
         setError("Error connecting to server");
       } finally {
         setLoading(false);
@@ -80,6 +80,7 @@ export default function MindfulnessPage() {
     }, phase.duration);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPhase, isActive]);
 
   const startExercise = () => {

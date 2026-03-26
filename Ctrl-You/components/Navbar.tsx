@@ -5,7 +5,6 @@ import { Menu ,User} from "lucide-react";
 import {
   Sheet,
   SheetContent,
-  SheetTitle,
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -17,7 +16,6 @@ import app from "@/firebase/firebase";
 
 export default function Navbar() {
   const [age, setAge] = useState<number | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // ✅ Always true
 
   // Example: you can still fetch profile if needed
   useEffect(() => {
@@ -69,7 +67,7 @@ export default function Navbar() {
             Profile
           </Link>
           <Link
-            href="/counselling"
+            href="/councelling"
             className="text-white hover:text-[#4ED0F9] transition"
           >
             Counselling
@@ -93,7 +91,7 @@ export default function Navbar() {
             Quiz
           </Link>
           <Link
-            href="/contact"
+            href="/#contact"
             className="text-white hover:text-[#4ED0F9] transition"
           >
             Contact
@@ -147,11 +145,11 @@ export default function Navbar() {
                   <span className="text-blue font-medium">Quiz</span>
                 </Link>
                  
-                <Link href="/Footer" className="flex items-center gap-2 px-4 py-2 border-2 hover:bg-purple-900 transition">
-                  <User size={20} className="text-white" />
-                  <span className="text-blue font-medium">Contact</span>
-                
-                </Link>
+                <Link href="/#contact" className="flex items-center gap-2 px-4 py-2 border-2 hover:bg-purple-900 transition">
+                <User size={20} className="text-white" />
+                <span className="text-blue font-medium">Contact</span>
+              
+              </Link>
                 <Link href="/healthyalternative" className="flex items-center gap-2 px-4 py-2 border-2 hover:bg-purple-900 transition">
                   <User size={20} className="text-white" />
                   <span className="text-blue font-medium">Healthy Alternative</span>
@@ -178,10 +176,10 @@ export default function Navbar() {
                 
                 </Link>
                 <Link href="/councelling" className="flex items-center gap-2 px-4 py-2 border-2 hover:bg-purple-900 transition">
-                  <User size={20} className="text-white" />
-                  <span className="text-blue font-medium">Audio councelling</span>
-                
-                </Link>
+                <User size={20} className="text-white" />
+                <span className="text-blue font-medium">Audio councillng</span>
+              
+              </Link>
                 <Link href="/chatbot" className="flex items-center gap-2 px-4 py-2 border-2 hover:bg-purple-900 transition mb-4">
                   <User size={20} className="text-white" />
                   <span className="text-blue font-medium">Chatbot</span>

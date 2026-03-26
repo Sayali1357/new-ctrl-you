@@ -1,9 +1,7 @@
 'use server';
 import { auth,db } from "@/firebase/admin";
-import e from "express";
-import { CollectionReference, DocumentReference } from "firebase-admin/firestore";
-import { doc, getDoc, setDoc} from "firebase/firestore";
 import { cookies } from "next/headers";
+
 
 const ONE_WEEK = 60 * 60 * 24 * 7 ;//7 days
 
@@ -28,7 +26,6 @@ export async function signUp(params: SignUpParams) {
             message: 'Account created successfully!'
         }
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     catch (e: any) {
         console.error("Error creating a user", e);
 

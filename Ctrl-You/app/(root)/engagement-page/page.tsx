@@ -43,6 +43,7 @@ export default function GamifiedEngagement() {
       }
     });
     return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
       const fetchReflections = async (firebaseUid: string) => {

@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import dayjs from "dayjs";
+import { getAuth } from "firebase/auth";
+import app from "@/firebase/firebase";
 
 import {
   getCounselingSessionById,
@@ -21,7 +22,9 @@ export default function CounselingFeedbackPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userId = localStorage.getItem("userId") ?? ""; // Or from auth
+        const auth = getAuth(app);
+        const user = auth.currentUser;
+        const userId = user?.uid ?? "";
         const sessionData = await getCounselingSessionById(String(id));
         const feedbackData = await getFeedbackBySessionId({ sessionId: String(id), userId });
         setSession(sessionData);

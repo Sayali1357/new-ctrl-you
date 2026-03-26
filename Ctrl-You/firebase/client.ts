@@ -1,17 +1,17 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCD4cAIdVp-JE-4bgoaAFcmXCc0ElQ9mHY",
-  authDomain: "ctrlyou-de90f.firebaseapp.com",
-  projectId: "ctrlyou-de90f",
-  storageBucket: "ctrlyou-de90f.firebasestorage.app",
-  messagingSenderId: "845152670415",
-  appId: "1:845152670415:web:bc44cf661ab1f98bb71dba",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: "G-W98WVJZNLQ"
 };
 

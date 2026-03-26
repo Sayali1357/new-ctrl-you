@@ -10,7 +10,6 @@ let clientPromise: Promise<MongoClient>;
 
 // Fix TypeScript issue with global
 declare global {
-  // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 

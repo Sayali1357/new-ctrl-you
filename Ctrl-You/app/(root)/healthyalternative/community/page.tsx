@@ -36,8 +36,7 @@ export default function CommunityPage() {
   const [commentInputs, setCommentInputs] = useState<{ [key: string]: string }>({});
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [posting, setPosting] = useState(false);
+
 
   const auth = getAuth(app);
 

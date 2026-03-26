@@ -1,13 +1,6 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
-interface SpinData {
-  uid: string;
-  activity: string;
-  points: number;
-  icon: string;
-  completed: boolean;
-}
 
 interface UserPointsDocument {
   uid: string;

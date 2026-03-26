@@ -27,7 +27,7 @@ interface InputData {
 // ---- Component ----
 export default function WellnessDashboard() {
   const [data, setData] = useState<DailyData[]>([]);
-  const [isVisible, setIsVisible] = useState(true)
+  const isVisible = true; // Always visible - animations trigger on mount
   const [inputData, setInputData] = useState<InputData>({
     sleep: "",
     study: "",
@@ -436,20 +436,5 @@ export default function WellnessDashboard() {
       </AnimatePresence>
     </div>
   );
-}
-function setError(arg0: string) {
-  throw new Error("Function not implemented.");
-}
-
-function setLoading(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
-
-function setFilledData(arg0: DailyData[]) {
-  throw new Error("Function not implemented.");
-}
-
-function getInsight(day: DailyData) {
-  throw new Error("Function not implemented.");
 }
 

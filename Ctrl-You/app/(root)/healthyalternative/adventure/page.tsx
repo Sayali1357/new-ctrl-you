@@ -155,7 +155,7 @@ export default function LevelUpPage() {
         animate={{ opacity: 1, y: 0 }} 
         className="text-4xl font-extrabold mb-6 text-center"
       >
-        Today's Challenge Streak 🔥
+        Today&apos;s Challenge Streak 🔥
       </motion.h1>
 
       {error && (
@@ -218,7 +218,7 @@ export default function LevelUpPage() {
       <div className="w-full max-w-xl bg-white rounded-lg shadow p-4 mb-8">
         {leaderboard.length > 0 ? (
           <ol className="list-decimal list-inside space-y-2">
-            {leaderboard.map((entry, index) => (
+            {leaderboard.map((entry) => (
               <li key={entry.uid} className="p-2 hover:bg-gray-50 rounded">
                 <span className="font-semibold">{entry.name}</span> - {entry.completed} / {entry.total} Challenges
               </li>

@@ -74,10 +74,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
         toast.success("Signed in successfully.");
          router.push('/Home-page'); // Redirect to homepage
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(`There was an error: ${error.message}`);
-      }
+    } catch (error: any) {
+      console.error("Firebase Auth Error:", error);
+      const errorMessage = error.message || "An unexpected error occurred";
+      const errorCode = error.code || "unknown-error";
+      toast.error(`Error (${errorCode}): ${errorMessage}`);
     }
   }
 
@@ -86,7 +87,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     <div className="card-border lg:min-w-[566px]">
       <div className="flex flex-col gap-6 card py-14 px-10">
         <div className="flex flex-row gap-2 justify-center">
-          <Image src="/logo-new.png" alt='Logo' height={32} width={38} />
+          <Image src="/logo-new.png" alt='Logo' height={32} width={38} style={{ width: 'auto' }} />
           <h2 className="text-primary-100">Ctrl+You</h2>
         </div>
         <h3>Control Your Digital Life</h3>

@@ -92,7 +92,7 @@ export default function FunFactCorner() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          🎊 Congrats! You've discovered {shownFacts.length} fun facts! Keep going!
+          🎊 Congrats! You&apos;ve discovered {shownFacts.length} fun facts! Keep going!
         </motion.div>
       )}
     </main>

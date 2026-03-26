@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FC, SVGProps, useEffect, useCallback } from 'react';
+import { useState, FC, useEffect, useCallback } from 'react';
 
 // --- Sudoku Game Component ---
 const SudokuGame: FC = () => {

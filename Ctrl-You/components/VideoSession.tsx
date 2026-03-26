@@ -71,7 +71,10 @@ export default function CounselingSessionPage({
 
     const onSpeechStart = () => setIsSpeaking(true);
     const onSpeechEnd = () => setIsSpeaking(false);
-    const onError = (err: Error) => console.error("Error:", err);
+    const onError = (err: any) => {
+      console.error("Vapi Error:", err);
+      setCallStatus(CallStatus.INACTIVE);
+    };
 
     vapi.on("call-start", onCallStart);
     vapi.on("call-end", onCallEnd);
@@ -88,6 +91,7 @@ export default function CounselingSessionPage({
       vapi.off("speech-end", onSpeechEnd);
       vapi.off("error", onError);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName]);
 
   // --- Timer & Auto End ---
@@ -105,19 +109,32 @@ export default function CounselingSessionPage({
 
       return () => clearInterval(timerInterval);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [callStatus, sessionStartTime, durationLimit]);
 
   // --- Start Session ---
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
-    await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
-      variableValues: {
-        prompt: counselorPrompt,
-        sessionId,
-        userId,
-        userName,
-      },
-    });
+    try {
+      const workflowId = process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID;
+      
+      if (!workflowId || workflowId === "your_vapi_workflow_id_here") {
+        throw new Error("VAPI Workflow ID is not configured. Please add a valid ID to NEXT_PUBLIC_VAPI_WORKFLOW_ID in .env.local.");
+      }
+
+      await vapi.start(workflowId, {
+        variableValues: {
+          prompt: counselorPrompt,
+          sessionId,
+          userId,
+          userName,
+        },
+      });
+    } catch (err: any) {
+      console.error("Failed to start VAPI call:", err);
+      setCallStatus(CallStatus.INACTIVE);
+      alert(err?.message || "Error connecting to the counseling session. Please check your configuration.");
+    }
   };
 
   // --- End Session ---
@@ -137,7 +154,7 @@ export default function CounselingSessionPage({
         endedAt: new Date().toISOString(),
       }),
     }).finally(() => {
-      router.push(`/counseling/feedback/${sessionId}`);
+      router.push(`/councelling/${sessionId}/feedback`);
     });
   };
 

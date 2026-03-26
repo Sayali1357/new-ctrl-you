@@ -21,7 +21,7 @@ interface Post {
 }
 
 // GET all posts
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   try {
     const client = await clientPromise;
     const db = client.db("levelup");
@@ -156,7 +156,7 @@ export async function PATCH(request: Request) {
       try {
         const userPost = await collection.findOne({ userId: userId });
         username = userPost?.username || "Anonymous";
-      } catch (error) {
+      } catch {
         console.log("Could not fetch username, using default");
       }
       

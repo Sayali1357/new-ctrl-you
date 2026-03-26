@@ -1,15 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-interface Article {
-  id: number;
-  title: string;
-  desc: string;
-  content: string;
-  views: number;
-}
 
 export default function LibraryPage() {
   const [mindmaps, setMindmaps] = useState<string[]>([]);

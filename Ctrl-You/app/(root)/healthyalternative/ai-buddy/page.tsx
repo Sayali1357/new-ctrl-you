@@ -51,7 +51,7 @@ export default function AIBuddyPage() {
         setMessages((prev) => [...prev, { from: "bot", text: botReply }]);
         setLoading(false);
       }, 1200);
-    } catch (error) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         { from: "bot", text: "Oops! Something went wrong. Try again later." },
