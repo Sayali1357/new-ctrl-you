@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { FaRobot, FaBrain, FaUserMd } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
-export default function ResultsPage() {
+function ResultsPageContent() {
   const searchParams = useSearchParams();
   const category = searchParams.get("category"); // "Low", "Medium", "High"
 
@@ -286,6 +286,14 @@ export default function ResultsPage() {
           </motion.div>
         )}
       </AnimatePresence>
-    </main>
-  );
+    </main>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white text-xl">Loading your results...</div>}>
+      <ResultsPageContent />
+    </Suspense>
+  );
 }
